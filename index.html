@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo giá Cửa lưới</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            background: url('https://i.imgur.com/BrJoeOv.png') no-repeat center center;
+            background-size: 210mm auto;
+            opacity: 0.99;
+            /* Điều chỉnh độ trong suốt của ảnh chìm */
+        }
+
+        .content {
+            width: 100%;
+            max-width: 210mm;
+            margin: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            /* Tạo nền trắng mờ cho nội dung */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Đảm bảo rằng các phần tử con nằm trên nền */
+            z-index: 1;
+        }
+
+        .breakview-section {
+            display: block;
+            width: 100%;
+            max-width: 210mm;
+            /* Đảm bảo kích thước giống trang A4 */
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            page-break-inside: avoid;
+            /* Ngăn việc cắt ngang nội dung khi in */
+            overflow: hidden;
+            /* Đảm bảo nội dung gọn gàng */
+            position: relative;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        p i {
+            font-size: 16px;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
+        }
+
+        .bordered-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .bordered-table th,
+        .bordered-table td {
+            margin-top: 20px;
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+            /* Đảm bảo nội dung không tràn khỏi ô */
+            page-break-inside: avoid;
+            /* Tránh cắt nội dung ô khi in */
+        }
+
+        .bordered-table tr {
+            page-break-inside: avoid;
+            /* Tránh cắt hàng bảng khi in */
+        }
+
+
+        @media (max-width: 768px) {
+            body {
+                background-size: cover;
+                /* Điều chỉnh ảnh nền trên thiết bị nhỏ */
+            }
+
+            .content {
+                padding: 10px;
+                /* Giảm padding để nội dung vừa màn hình */
+            }
+
+            .bordered-table th,
+            .bordered-table td {
+                font-size: 14px;
+                /* Giảm kích thước chữ trên thiết bị di động */
+            }
+
+            .bordered-table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+    var DocTienBangChu = function () {
+        this.ChuSo = new Array(" không ", " một ", " hai ", " ba ", " bốn ", " năm ", " sáu ", " bảy ", " tám ", " chín ");
+        this.Tien = new Array("", " nghìn", " triệu", " tỷ", " nghìn tỷ", " triệu tỷ");
+    };
+
+    DocTienBangChu.prototype.docSo3ChuSo = function (baso) {
+        var tram;
+        var chuc;
+        var donvi;
+        var KetQua = "";
+        tram = parseInt(baso / 100);
+        chuc = parseInt((baso % 100) / 10);
+        donvi = baso % 10;
+        if (tram == 0 && chuc == 0 && donvi == 0) return "";
+        if (tram != 0) {
+            KetQua += this.ChuSo[tram] + " trăm ";
+            if ((chuc == 0) && (donvi != 0)) KetQua += " linh ";
+        }
+        if ((chuc != 0) && (chuc != 1)) {
+            KetQua += this.ChuSo[chuc] + " mươi";
+            if ((chuc == 0) && (donvi != 0)) KetQua = KetQua + " linh ";
+        }
+        if (chuc == 1) KetQua += " mười ";
+        switch (donvi) {
+            case 1:
+                if ((chuc != 0) && (chuc != 1)) {
+                    KetQua += " mốt ";
+                }
+                else {
+                    KetQua += this.ChuSo[donvi];
+                }
+                break;
+            case 5:
+                if (chuc == 0) {
+                    KetQua += this.ChuSo[donvi];
+                }
+                else {
+                    KetQua += " lăm ";
+                }
+                break;
+            default:
+                if (donvi != 0) {
+                    KetQua += this.ChuSo[donvi];
+                }
+                break;
+        }
+        return KetQua;
+    }
+
+    DocTienBangChu.prototype.doc = function (SoTien) {
+        var lan = 0;
+        var i = 0;
+        var so = 0;
+        var KetQua = "";
+        var tmp = "";
+        var soAm = false;
+        var ViTri = new Array();
+        if (SoTien < 0) soAm = true;//return "Số tiền âm !";
+        if (SoTien == 0) return "Không đồng";//"Không đồng !";
+        if (SoTien > 0) {
+            so = SoTien;
+        }
+        else {
+            so = -SoTien;
+        }
+        if (SoTien > 8999999999999999) {
+            //SoTien = 0;
+            return "";//"Số quá lớn!";
+        }
+        ViTri[5] = Math.floor(so / 1000000000000000);
+        if (isNaN(ViTri[5]))
+            ViTri[5] = "0";
+        so = so - parseFloat(ViTri[5].toString()) * 1000000000000000;
+        ViTri[4] = Math.floor(so / 1000000000000);
+        if (isNaN(ViTri[4]))
+            ViTri[4] = "0";
+        so = so - parseFloat(ViTri[4].toString()) * 1000000000000;
+        ViTri[3] = Math.floor(so / 1000000000);
+        if (isNaN(ViTri[3]))
+            ViTri[3] = "0";
+        so = so - parseFloat(ViTri[3].toString()) * 1000000000;
+        ViTri[2] = parseInt(so / 1000000);
+        if (isNaN(ViTri[2]))
+            ViTri[2] = "0";
+        ViTri[1] = parseInt((so % 1000000) / 1000);
+        if (isNaN(ViTri[1]))
+            ViTri[1] = "0";
+        ViTri[0] = parseInt(so % 1000);
+        if (isNaN(ViTri[0]))
+            ViTri[0] = "0";
+        if (ViTri[5] > 0) {
+            lan = 5;
+        }
+        else if (ViTri[4] > 0) {
+            lan = 4;
+        }
+        else if (ViTri[3] > 0) {
+            lan = 3;
+        }
+        else if (ViTri[2] > 0) {
+            lan = 2;
+        }
+        else if (ViTri[1] > 0) {
+            lan = 1;
+        }
+        else {
+            lan = 0;
+        }
+        for (i = lan; i >= 0; i--) {
+            tmp = this.docSo3ChuSo(ViTri[i]);
+            KetQua += tmp;
+            if (ViTri[i] > 0) KetQua += this.Tien[i];
+            if ((i > 0) && (tmp.length > 0)) KetQua += '';//',';//&& (!string.IsNullOrEmpty(tmp))
+        }
+        if (KetQua.substring(KetQua.length - 1) == ',') {
+            KetQua = KetQua.substring(0, KetQua.length - 1);
+        }
+        KetQua = KetQua.substring(1, 2).toUpperCase() + KetQua.substring(2);
+        if (soAm) {
+            return "Âm " + KetQua + " đồng";//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+        }
+        else {
+            return KetQua + " đồng";//.substring(0, 1);//.toUpperCase();// + KetQua.substring(1);
+        }
+    }
+
+    function getCustomQueryParam(param) {
+        const queryString = window.location.href.split('?').slice(1);
+        for (let part of queryString) {
+            const [key, value] = part.split('=');
+            if (key === param) {
+                return decodeURIComponent(value || '');
+            }
+        }
+        return null;
+    }
+
+    function getValuesBetweenMarkers(input, startMarker, endMarker) {
+        const regex = new RegExp(`${startMarker}(.*?)${endMarker}`, 'g');
+        let matches = [];
+        let match;
+        while ((match = regex.exec(input)) !== null) {
+            const tempString = match[1];
+            const innerMatches = tempString.split('@');
+            matches.push(...innerMatches);
+        }
+        return matches;
+    }
+
+    function formatNumber(numberString) {
+        if (!numberString) return '';
+        // Loại bỏ tất cả dấu chấm
+        const num = numberString.replace(/\./g, '');
+        const formatted = parseFloat(num).toString();
+        return formatted.replace('.', ',');
+    }
+
+    function formatWithCommas(numberString) {
+        if (!numberString) return '';
+        const num = numberString.replace(',', '.');
+        return parseFloat(num).toLocaleString('it-IT');
+    }
+
+    const SPREADSHEET_ID = '14R9efcJ2hGE3mCgmJqi6TNbqkm4GFe91LEAuCyCa4O0';
+    const RANGE = 'don_hang!A:BG'; // Mở rộng phạm vi đến cột BG
+    const RANGE_CHITIET = 'don_hang_chi_tiet!F:AI'; // Dải dữ liệu từ sheet 'don_hang_chi_tiet'
+    const API_KEY = 'AIzaSyA9g2qFUolpsu3_HVHOebdZb0NXnQgXlFM';
+
+    // Lấy giá trị từ URI sau dấu "?"
+    function getDataFromURI() {
+        const url = window.location.href;
+        const matches = url.split('?');
+        return matches.length > 1 ? decodeURIComponent(matches[1]) : null;
+    }
+
+    // Initialize Google API Client
+    function initialize() {
+        gapi.load('client', async () => {
+            try {
+                await gapi.client.init({
+                    apiKey: API_KEY,
+                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4']
+                });
+
+                const uriData = getDataFromURI();
+                if (!uriData) {
+                    updateContent('No data found in URI.');
+                    return;
+                }
+
+                findRowInSheet(uriData);
+                findDetailsInSheet(uriData);
+            } catch (error) {
+                updateContent('Initialization error: ' + error.message);
+                console.error('Initialization Error:', error);
+            }
+        });
+    }
+    // Tìm chỉ số dòng chứa dữ liệu khớp trong cột B và lấy các giá trị từ các cột khác
+    async function findRowInSheet(uriData) {
+        try {
+            const response = await gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEET_ID,
+                range: RANGE,
+            });
+
+            const rows = response.result.values;
+            if (!rows || rows.length === 0) {
+                updateContent('No data found.');
+                return;
+            }
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const bColumnValue = row[1]; // Cột B
+
+                if (bColumnValue === uriData) {
+                    // Trích xuất các giá trị cần thiết
+                    const dataMapping = {
+                        phuongThucban: row[0], // Cột A
+                        maDonhang: row[1], // Cột B
+                        donviPhutrach: row[5], // Cột F
+                        tenNguoilienhe: row[13], // Cột N
+                        tenKhachhangcuoi: row[23], // Cột X
+                        tenTochuc: row[15], // Cột P
+                        diachi: row[8], // Cột I
+                        diachiChitiet: row[17], // Cột R
+                        diachiKhachhangcuoi: row[24], // Cột Y
+                        tenNhanvien: row[4], // Cột E
+                        sdtNhanvien: row[6], // Cột G
+                        sdtKhachhang: row[18], // Cột S
+                        sdtKhachhangcuoi: row[22], // Cột W
+                        emailKhachhang: row[19], // Cột T
+                        hanGiaohang: row[70], // Cột BS
+                        tongSobo: row[25], // Cột Z
+                        congnpp: row[43], // Cột AR
+                        mucChietkhaunpp: row[44], // Cột AS
+                        giatriChietkhaunpp: row[45], // Cột AT
+                        phiVanchuyenlapdatnpp: row[46], // Cột AU
+                        mucthueGTGTnpp: row[47], // Cột AV
+                        thueGTGTnpp: row[48], // Cột AW
+                        tamUngnpp: row[49], // Cột AX
+                        sotienConthieunpp: row[58], // Cột BG
+                    };
+
+                    // Định dạng và chuyển đổi số tiền
+                    const formattedSotien = formatNumber(dataMapping.sotienConthieunpp);
+                    const doctien = new DocTienBangChu();
+                    const sotienBangchu = doctien.doc(formattedSotien);
+                    const today = new Date();
+                    const ngayPhatHanh = today.toLocaleDateString('vi-VN');
+
+                    // Cập nhật DOM
+                    Object.keys(dataMapping).forEach((key) => {
+                        if (dataMapping[key]) {
+                            updateElement(key, dataMapping[key]);
+                        }
+                    });
+                    if (sotienBangchu) updateElement('sotienBangchu', sotienBangchu);
+                    if (ngayPhatHanh) updateElement('ngayPhatHanh', ngayPhatHanh);
+
+                    function displayHTML() {
+                        // Trích xuất các giá trị cần thiết từ dataMapping
+                        const phuongThucban = dataMapping.phuongThucban || '';
+                        const maDonhang = dataMapping.maDonhang || '';
+                        const donviPhutrach = dataMapping.donviPhutrach || '';
+                        const tenNguoilienhe = dataMapping.tenNguoilienhe || '';
+                        const tenKhachhangcuoi = dataMapping.tenKhachhangcuoi || '';
+                        const tenTochuc = dataMapping.tenTochuc || '';
+                        const diachi = dataMapping.diachi || '';
+                        const diachiChitiet = dataMapping.diachiChitiet || '';
+                        const diachiKhachhangcuoi = dataMapping.diachiKhachhangcuoi || '';
+                        const tenNhanvien = dataMapping.tenNhanvien || '';
+                        const sdtNhanvien = dataMapping.sdtNhanvien || '';
+                        const sdtKhachhang = dataMapping.sdtKhachhang || '';
+                        const sdtKhachhangcuoi = dataMapping.sdtKhachhangcuoi || '';
+                        const emailKhachhang = dataMapping.emailKhachhang || '';
+                        const hanGiaohang = dataMapping.hanGiaohang || '';
+
+
+                        let htmlContent = "";
+
+                        if (donviPhutrach === "BP. BH1" && phuongThucban !== "Bán chéo") {
+                            htmlContent = `
+                            <tbody>
+                                    <tr style="line-height: 24px;">
+                                        <td colspan="2"><b>Thông tin báo giá</b></td>
+                                        <td><i>Số:</i></td>
+                                        <td><i>${maDonhang}</i></td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Kính gửi:</i></td>
+                                        <td>${tenNguoilienhe}</td>
+                                        <td><i>Ngày phát hành:</i></td>
+                                        <td>${ngayPhatHanh}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Đơn vị:</i></td>
+                                        <td>${donviPhutrach}</td>
+                                        <td><i>Đơn vị trực thuộc:</i></td>
+                                        <td>${donviPhutrach}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Địa chỉ:</i></td>
+                                        <td>${diachiChitiet}</td>
+                                        <td><i>Soạn báo giá:</i></td>
+                                        <td>${tenNhanvien}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>SĐT:</i></td>
+                                        <td>${sdtKhachhang}</td>
+                                        <td><i>SĐT:</i></td>
+                                        <td>${sdtNhanvien}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Email:</i></td>
+                                        <td><b>
+                                                <font color="red">${emailKhachhang}</font>
+                                            </b></td>
+                                        <td><i>CSKH:</i></td>
+                                       <td><b>
+                                                <font color="red">1900 0282</font>
+                                            </b></td>
+                                    </tr>
+                                </tbody>
+                            `;
+                        } else if (donviPhutrach === "BP. BH1" && phuongThucban === "Bán chéo") {
+                            htmlContent = `
+                                <tbody>
+                                    <tr style="line-height: 24px;">
+                                        <td colspan="2"><b>Thông tin báo giá</b></td>
+                                        <td><i>Số:</i></td>
+                                        <td><i>${maDonhang}</i></td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Kính gửi:</i></td>
+                                        <td>${tenKhachhangcuoi}</td>
+                                        <td><i>Ngày phát hành:</i></td>
+                                        <td>${ngayPhatHanh}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Đơn vị:</i></td>
+                                        <td></td>
+                                        <td><i>Đơn vị trực thuộc:</i></td>
+                                        <td>${donviPhutrach}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Địa chỉ:</i></td>
+                                        <td>${diachiKhachhangcuoi}</td>
+                                        <td><i>Soạn báo giá:</i></td>
+                                        <td>${tenNhanvien}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>SĐT:</i></td>
+                                        <td>${sdtKhachhangcuoi}</td>
+                                        <td><i>SĐT:</i></td>
+                                        <td>${sdtNhanvien}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Email:</i></td>
+                                        <td><b>
+                                                <font color="red"></font>
+                                            </b></td>
+                                        <td><i>CSKH:</i></td>
+                                        <td><b>
+                                                <font color="red">1900 0282</font>
+                                            </b></td>
+                                    </tr>
+                                </tbody>
+                                `;
+                        } else if (donviPhutrach !== "BP. BH1" && hanGiaohang !== "") {
+                            htmlContent = `
+                                   <tbody>
+                                    <tr style="line-height: 24px;">
+                                        <td colspan="2"><b>Thông tin báo giá</b></td>
+                                        <td><i>Số:</i></td>
+                                        <td><i>${maDonhang}</i></td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Kính gửi:</i></td>
+                                        <td></span></td>
+                                        <td><i>Ngày phát hành:</i></td>
+                                        <td>${ngayPhatHanh}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Đơn vị:</i></td>
+                                        <td>${donviPhutrach}</td>
+                                        <td><i>Dự kiến giao:</i></td>
+                                        <td>${hanGiaohang}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Địa chỉ:</i></td>
+                                        <td>${diachi}</td>
+                                        <td><i>Soạn báo giá:</i></td>
+                                        <td>${tenNhanvien}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>SĐT:</i></td>
+                                        <td>${sdtNhanvien}</td>
+                                        <td><i></i></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Công trình:</i></td>
+                                        <td><b>
+                                                <font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font>
+                                            </b></td>
+                                        <td><i>CSKH:</i></td>
+                                        <td><b>
+                                                <font color="red">1900 0282</font>
+                                        </td></b>
+                                    </tr>
+                                </tbody>
+                                `;
+                        } else if (donviPhutrach !== "BP. BH1" && hanGiaohang === "") {
+                            htmlContent = `
+                                   <tbody>
+                                    <tr style="line-height: 24px;">
+                                        <td colspan="2"><b>Thông tin báo giá</b></td>
+                                        <td><i>Số:</i></td>
+                                        <td><i>${maDonhang}</i></td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Kính gửi:</i></td>
+                                        <td></span></td>
+                                        <td><i>Ngày phát hành:</i></td>
+                                        <td>${ngayPhatHanh}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Đơn vị:</i></td>
+                                        <td>${donviPhutrach}</td>
+                                        <td><i>Dự kiến giao:</i></td>
+                                        <td>Trao đổi với QLSX</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Địa chỉ:</i></td>
+                                        <td>${diachi}</td>
+                                        <td><i>Soạn báo giá:</i></td>
+                                        <td>${tenNhanvien}</td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>SĐT:</i></td>
+                                        <td>${sdtNhanvien}</td>
+                                        <td><i></i></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr style="line-height: 24px;">
+                                        <td><i>Công trình:</i></td>
+                                        <td><b>
+                                                <font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font>
+                                            </b></td>
+                                        <td><i>CSKH:</i></td>
+                                        <td><b>
+                                                <font color="red">1900 0282</font>
+                                        </td></b>
+                                    </tr>
+                                </tbody>
+                                `;
+                        }
+
+                        document.getElementById("content").innerHTML = htmlContent;
+                    }
+
+                    // Gọi hàm để hiển thị
+                    displayHTML();
+
+                    function displayConditions() {
+                        // Trích xuất các giá trị cần thiết từ dataMapping
+                        const phuongThucban = dataMapping.phuongThucban || '';
+                        const maDonhang = dataMapping.maDonhang || '';
+                        const donviPhutrach = dataMapping.donviPhutrach || '';
+                        const tenNguoilienhe = dataMapping.tenNguoilienhe || '';
+                        const tenKhachhangcuoi = dataMapping.tenKhachhangcuoi || '';
+                        const tenTochuc = dataMapping.tenTochuc || '';
+                        const diachi = dataMapping.diachi || '';
+                        const diachiChitiet = dataMapping.diachiChitiet || '';
+                        const diachiKhachhangcuoi = dataMapping.diachiKhachhangcuoi || '';
+                        const tenNhanvien = dataMapping.tenNhanvien || '';
+                        const sdtNhanvien = dataMapping.sdtNhanvien || '';
+                        const sdtKhachhang = dataMapping.sdtKhachhang || '';
+                        const sdtKhachhangcuoi = dataMapping.sdtKhachhangcuoi || '';
+                        const emailKhachhang = dataMapping.emailKhachhang || '';
+                        const hanGiaohang = dataMapping.hanGiaohang || '';
+
+                        let outputHTML = ""; // Đổi tên biến từ htmlContent thành outputHTML
+
+                        // Điều kiện cho thuế GTGT
+                        if (thueGTGTnpp === 0) {
+                            outputHTML += `<p>1. Giá trên đã bao gồm thuế GTGT.</p>`;
+                        } else {
+                            outputHTML += `<p>1. Giá trên chưa bao gồm thuế GTGT.</p>`;
+                        }
+
+                        // Điều kiện cho phí vận chuyển và phương thức bán
+                        if ((phiVanchuyenlapdatnpp === "" || phiVanchuyenlapdatnpp === 0) && phuongThucban !== "Bán lẻ") {
+                            outputHTML += `<p>2. Giá trên chưa bao gồm phí vận chuyển, lắp đặt.</p>`;
+                        } else {
+                            outputHTML += `<p>2. Giá trên đã bao gồm phí vận chuyển, lắp đặt.</p>`;
+                        }
+
+                        // Điều kiện cho đơn vị phụ trách và phương thức bán
+                        if (donviPhutrach === "BP. BH1" && phuongThucban === "Bán đại lý") {
+                            outputHTML += `
+                                <p>3. Giá trên có hiệu lực 30 ngày kể từ ngày phát hành.</p>
+                                <p>4. Thanh toán 100% tổng giá trị đơn hàng trước khi giao hàng.</p>
+                                <p>5. Giao hàng sau 3 đến 5 ngày làm việc, kể từ ngày chốt đơn.</p>
+                                <p>6. Thời gian bảo hành 12 tháng theo tiêu chuẩn của nhà sản xuất.</p>
+                            `;
+                        } else {
+                            outputHTML += `
+                                <p>3. Giá trên có hiệu lực 30 ngày kể từ ngày phát hành.</p>
+                                <p>4. Tạm ứng 50% tổng giá trị đơn hàng, thanh toán hết số còn lại sau khi nghiệm thu bàn giao.</p>
+                                <p>5. Lắp đặt sau 5 đến 7 ngày làm việc, kể từ ngày nhận được tiền tạm ứng lần 1.</p>
+                                <p>6. Thời gian bảo hành:</p>
+                                <p style="padding-left: 20px;"> - Bảo hành 2 năm sản phẩm cửa lưới BS-Polyester, cửa rèm vải visor, cửa rèm tổ ong và phụ kiện lắp đồng bộ
+                                    với cửa: tay nắm kèm khóa, động cơ cuốn, điều khiển, vật tư nhựa.</p>
+                                <p style="padding-left: 20px;"> - Bảo hành 3 năm sản phẩm cửa lưới sợi thủy tinh, cửa lưới HQ-Polyester, cửa lưới PVC, cửa xếp lưới nhôm, cửa
+                                    xếp nhựa PC, cửa lưới thép chống cắt.</p>
+                                <p style="padding-left: 20px;"> - Bảo hành 5 năm sản phẩm cửa sử dụng lưới Inox.</p>
+                            `;
+                        }
+
+                        // Hiển thị nội dung HTML trong thẻ `content`
+                        document.getElementById("contentfooter").innerHTML = outputHTML;
+                    }
+
+                    // Gọi hàm để áp dụng điều kiện và hiển thị
+                    displayConditions();
+
+
+                    // Ẩn dòng nếu giá trị bằng 0 hoặc không tồn tại
+                    toggleRowVisibility('rowChietKhau', dataMapping.giatriChietkhaunpp);
+                    toggleRowVisibility('rowPhiVanChuyen', dataMapping.phiVanchuyenlapdatnpp);
+                    toggleRowVisibility('rowThueGTGT', dataMapping.thueGTGTnpp);
+                    toggleRowVisibility('rowTamUng', dataMapping.tamUngnpp);
+
+                    return; // Dừng khi tìm thấy
+                }
+            }
+
+            updateContent(`No matching data found for "${uriData}".`);
+        } catch (error) {
+            updateContent('Error fetching data: ' + error.message);
+            console.error('Fetch Error:', error);
+        }
+    }
+
+    // Tìm chi tiết trong bảng tính
+    async function findDetailsInSheet(uriData) {
+        try {
+            const response = await gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEET_ID,
+                range: RANGE_CHITIET,
+            });
+
+            const rows = response.result.values;
+            if (!rows || rows.length === 0) {
+                updateContent('No detail data found.');
+                return;
+            }
+
+            const filteredRows = rows.filter(row => row[0] === uriData); // Lọc các dòng có giá trị cột F khớp với uriData
+            if (filteredRows.length > 0) {
+                displayDetailData(filteredRows);
+            } else {
+                updateContent('No matching data found.');
+            }
+        } catch (error) {
+            console.error('Error fetching detail data:', error);
+            updateContent('Error fetching detail data.');
+        }
+    }
+
+    // Hiển thị dữ liệu chi tiết
+    function displayDetailData(filteredRows) {
+        const tableBody = document.getElementById('itemTableBody');
+        tableBody.innerHTML = ''; // Xóa dữ liệu cũ nếu có
+
+        filteredRows.forEach(row => {
+            const item = extractDetailDataFromRow(row);
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td style="text-align: center">${item.sttTrongdon || ''}</td>
+                    <td>${item.vitriLapdat || ''}</td>
+                    <td>${item.maSanphamid || ''}</td>
+                    <td>${item.diengiai || ''}</td>
+                    <td style="text-align: right">${item.chieuRong || ''}</td>
+                    <td style="text-align: center">${item.chieuCao || ''}</td>
+                    <td style="text-align: right">${item.dienTich || ''}</td>
+                    <td style="text-align: center">${item.soLuong || ''}</td>
+                    <td style="text-align: center">${item.dvt || ''}</td>
+                    <td style="text-align: center">${item.khoiLuong || ''}</td>
+                    <td style="text-align: right">${item.dongianpp || ''}</td>
+                    <td style="text-align: right">${item.giabannpp || ''}</td>
+                </tr>
+            `;
+        });
+    }
+
+    // Trích xuất dữ liệu từ hàng
+    function extractDetailDataFromRow(row) {
+        return {
+            sttTrongdon: row[2],
+            vitriLapdat: row[4],
+            diengiai: row[11],
+            maSanphamid: row[9],
+            ghiChu: row[19],
+            chieuRong: row[12],
+            chieuCao: row[13],
+            dienTich: row[14],
+            soLuong: row[16],
+            dvt: row[17],
+            khoiLuong: row[18],
+            dongianpp: row[25],
+            giabannpp: row[26],
+        };
+    }
+
+    // Hàm cập nhật nội dung DOM
+    function updateElement(elementId, value) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.innerText = value;
+        }
+    }
+
+    // Cập nhật nội dung khi không tìm thấy hoặc lỗi
+    function updateContent(message) {
+        document.getElementById('content').innerText = message;
+    }
+
+    // Hàm ẩn dòng nếu giá trị rỗng hoặc bằng 0
+    function toggleRowVisibility(rowId, value) {
+        const row = document.getElementById(rowId);
+        if (row) {
+            const numericValue = parseFloat(value?.replace(/\./g, '').replace(',', '.') || '0');
+            row.style.display = numericValue ? '' : 'none';
+        }
+    }
+
+    // Khởi tạo ứng dụng
+    initialize();
+</script>
+
+
+<body>
+    <div class="content">
+        <img src="https://i.imgur.com/vfwvNd4.jpg" alt="Mô tả hình ảnh">
+        <h2 style="text-align: center">BÁO GIÁ CỬA LƯỚI CHỐNG MUỖI</h2>
+        <table class="bordered-table" id="content">
+        </table>
+        <table class="bordered-table">
+            <tr style="background-color: #78b47ac7; color: black">
+                <th rowspan="2" style="text-align: center">STT</th>
+                <th rowspan="2" style="text-align: center">Vị trí lắp đặt</th>
+                <th rowspan="2" style="text-align: center">Mã sản phẩm</th>
+                <th rowspan="2" style="text-align: center">Diễn giải</th>
+                <th colspan="2" style="text-align: center">Kích thước</th>
+                <th rowspan="2" style="text-align: center">Diện tích<br>(m2)</th>
+                <th rowspan="2" style="text-align: center">S.lg<br>(bộ)</th>
+                <th rowspan="2" style="text-align: center">ĐVT</th>
+                <th rowspan="2" style="text-align: center">K.lg</th>
+                <th rowspan="2" style="text-align: center">Đơn giá<br>(VNĐ/m2)</th>
+                <th rowspan="2" style="text-align: center">Thành tiền<br>(VNĐ)</th>
+            </tr>
+            <tr style="background-color: #78b47ac7; color: black">
+                <th style="text-align: center">Rộng<br>(mm)</th>
+                <th style="text-align: center">Cao<br>(mm)</th>
+            </tr>
+            <tbody id="itemTableBody">
+                <!-- Rows will be added dynamically here -->
+            </tbody>
+            <tr>
+                <th colspan="7">Cộng</th>
+                <th style="text-align: center"><span id="tongSobo"></span></th>
+                <th style="text-align: center"><b>Bộ</b></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: right"><span id="congnpp"></span></th>
+            </tr>
+            <tr id="rowChietKhau">
+                <th colspan="7">Chiết khấu</th>
+                <th style="text-align: center"><span id="mucChietkhaunpp">%</span></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: right"><span id="giatriChietkhaunpp"></span></th>
+            </tr>
+            <tr id="rowPhiVanChuyen">
+                <th colspan="7">Phí vận chuyển lắp đặt</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: right"><span id="phiVanchuyenlapdatnpp"></span></th>
+            </tr>
+            <tr id="rowThueGTGT">
+                <th colspan="7">Thuế GTGT</th>
+                <th style="text-align: center"><span id="mucthueGTGTnpp">%</span></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: right"><span id="thueGTGTnpp"></span></th>
+            </tr>
+            <tr id="rowTamUng">
+                <th colspan="7">Tạm ứng</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: right"><span id="tamUngnpp"></span></th>
+            </tr>
+            <tr>
+                <th colspan="7">Số tiền còn phải thanh toán</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th style="text-align: right"><span id="sotienConthieunpp"></span></th>
+            </tr>
+            <tr>
+                <th colspan="12">Bằng chữ: <span id="sotienBangchu"></span></th>
+            </tr>
+        </table>
+
+        <p><b>Ghi chú:</b></p>
+        <div id="contentfooter"></div>
+
+    </div>
+</body>
+
+</html>
