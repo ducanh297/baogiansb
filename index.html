@@ -113,42 +113,42 @@
         }
 
         .borderedcol-2-head {
-            width: 7%;
+            width: 6.5%;
             text-align: center;
         }
 
         .borderedcol-3-head {
-            width: 11%;
+            width: 13%;
             text-align: center;
         }
 
         .borderedcol-4-head {
-            width: 23%;
+            width: 26%;
             text-align: center;
         }
 
         .borderedcol-2 {
-            width: 7%;
+            width: 6.5%;
             text-align: left;
         }
 
         .borderedcol-3 {
-            width: 11%;
+            width: 13%;
             text-align: left;
         }
 
         .borderedcol-4 {
-            width: 23%;
+            width: 26%;
             text-align: left;
         }
 
         .borderedcol-5 {
-            width: 8%;
+            width: 7%;
             text-align: center;
         }
 
         .borderedcol-6 {
-            width: 8%;
+            width: 7%;
             text-align: center;
         }
 
@@ -158,7 +158,7 @@
         }
 
         .borderedcol-8 {
-            width: 4.5%;
+            width: 5%;
             text-align: center;
         }
 
@@ -173,7 +173,7 @@
         }
 
         .borderedcol-11-head {
-            width: 11%;
+            width: 9%;
             text-align: center;
         }
 
@@ -183,7 +183,7 @@
         }
 
         .borderedcol-11 {
-            width: 11%;
+            width: 9%;
             text-align: right;
         }
 
@@ -193,7 +193,7 @@
         }
 
         .borderedcol-13 {
-            width: 16%;
+            width: 14%;
             text-align: right;
         }
 
@@ -557,11 +557,23 @@
     const RANGE_CHITIET = 'don_hang_chi_tiet!F:AI'; // Dải dữ liệu từ sheet 'don_hang_chi_tiet'
     const API_KEY = 'AIzaSyA9g2qFUolpsu3_HVHOebdZb0NXnQgXlFM';
 
-    // Lấy giá trị từ URI sau dấu "?"
+    // Lấy giá trị từ URI sau dấu "?" cho các tham số cụ thể
     function getDataFromURI() {
         const url = window.location.href;
-        const matches = url.split('?');
-        return matches.length > 1 ? decodeURIComponent(matches[1]) : null;
+
+        // Sử dụng RegEx để trích xuất giá trị của ma_don_hang và QRCODE
+        const maDonHangURIMatch = url.match(/ma_don_hang=([^?&]*)/);
+        const qrCodeMatch = url.match(/QRCODE=(.*)$/);  // Sử dụng regex để lấy tất cả sau QRCODE=
+
+        // Gán các giá trị vào các biến
+        const maDonHangURI = maDonHangURIMatch ? decodeURIComponent(maDonHangURIMatch[1]) : null;
+        const qrCode = qrCodeMatch ? decodeURIComponent(qrCodeMatch[1]) : null;
+
+        // Trả về một đối tượng chứa các giá trị
+        return {
+            maDonHangURI,
+            qrCode
+        };
     }
 
     // Initialize Google API Client
@@ -574,21 +586,41 @@
                 });
 
                 const uriData = getDataFromURI();
-                if (!uriData) {
-                    updateContent('No data found in URI.');
+                if (!uriData.maDonHangURI || !uriData.qrCode) {
+                    updateContent('No valid data found in URI.');
                     return;
                 }
 
-                findRowInSheet(uriData);
-                findDetailsInSheet(uriData);
+                // Sử dụng ma_don_hang và QRCODE
+                console.log('ma_don_hang:', uriData.maDonHangURI);
+                console.log('QRCODE:', uriData.qrCode);
+
+                findRowInSheet(uriData.maDonHangURI);
+                findDetailsInSheet(uriData.maDonHangURI);
+
+                // Cập nhật nội dung hoặc xử lý thêm thông tin QR Code
+                updateQRCodeContent(uriData.qrCode);
+
             } catch (error) {
                 updateContent('Initialization error: ' + error.message);
                 console.error('Initialization Error:', error);
             }
         });
     }
+
+    function updateQRCodeContent(qrCode) {
+        // Gắn QR Code vào trong nội dung trang (VD: hiển thị ảnh QR code)
+        const qrCodeElement = document.getElementById('qr-code');
+        if (qrCodeElement) {
+            qrCodeElement.src = qrCode;
+            // Đặt kích thước của QR Code
+            qrCodeElement.style.width = '300px';  // Chiều rộng 150px
+            qrCodeElement.style.height = 'auto';  // Chiều cao tự động
+        }
+    }
+
     // Tìm chỉ số dòng chứa dữ liệu khớp trong cột B và lấy các giá trị từ các cột khác
-    async function findRowInSheet(uriData) {
+    async function findRowInSheet(maDonhangURI) {
         try {
             const response = await gapi.client.sheets.spreadsheets.values.get({
                 spreadsheetId: SPREADSHEET_ID,
@@ -605,7 +637,7 @@
                 const row = rows[i];
                 const bColumnValue = row[1]; // Cột B
 
-                if (bColumnValue === uriData) {
+                if (bColumnValue === maDonhangURI) {
                     // Trích xuất các giá trị cần thiết
                     const dataMapping = {
                         phuongThucban: row[0], // Cột A
@@ -905,11 +937,20 @@
                     toggleRowVisibility('rowThueGTGT', dataMapping.thueGTGTnpp);
                     toggleRowVisibility('rowTamUng', dataMapping.tamUngnpp);
 
+                    // Lấy phần tử nội dung
+                    const paymentContent = document.getElementById('payment-content');
+
+                    // Kiểm tra giá trị và hiển thị hoặc ẩn nội dung
+                    if (dataMapping.donviPhutrach === "BP. BH1" || dataMapping.donviPhutrach === "BP. BH2") {
+                        paymentContent.style.display = 'block'; // Hiển thị nội dung
+                    } else {
+                        paymentContent.style.display = 'none'; // Ẩn nội dung
+                    }
                     return; // Dừng khi tìm thấy
                 }
             }
 
-            updateContent(`No matching data found for "${uriData}".`);
+            updateContent(`No matching data found for "${maDonhangURI}".`);
         } catch (error) {
             updateContent('Error fetching data: ' + error.message);
             console.error('Fetch Error:', error);
@@ -917,7 +958,7 @@
     }
 
     // Tìm chi tiết trong bảng tính
-    async function findDetailsInSheet(uriData) {
+    async function findDetailsInSheet(maDonhangURI) {
         try {
             const response = await gapi.client.sheets.spreadsheets.values.get({
                 spreadsheetId: SPREADSHEET_ID,
@@ -930,7 +971,7 @@
                 return;
             }
 
-            const filteredRows = rows.filter(row => row[0] === uriData); // Lọc các dòng có giá trị cột F khớp với uriData
+            const filteredRows = rows.filter(row => row[0] === maDonhangURI); // Lọc các dòng có giá trị cột F khớp với maDonhangURI
             if (filteredRows.length > 0) {
                 displayDetailData(filteredRows);
             } else {
@@ -1030,10 +1071,10 @@
                 <th class="borderedcol-4-head" rowspan="2">Diễn giải</th>
                 <th class="borderedcol-13" colspan="2">Kích thước</th>
                 <th class="borderedcol-7" rowspan="2">Diện tích<br>(m<sup>2</sup>)</th>
-                <th class="borderedcol-8" rowspan="2">S.lg<br>(bộ)</th>
-                <th class="borderedcol-9" rowspan="2">Đ<br>V<br>T</th>
-                <th class="borderedcol-10" rowspan="2">K.lg</th>
-                <th class="borderedcol-11-head" rowspan="2">Đơn giá<br>(VNĐ<br>/ĐVT)</th>
+                <th class="borderedcol-8" rowspan="2">Số<br>lượng<br>(bộ)</th>
+                <th class="borderedcol-9" rowspan="2">ĐVT</th>
+                <th class="borderedcol-10" rowspan="2">Khối<br>lượng</th>
+                <th class="borderedcol-11-head" rowspan="2">Đơn giá<br>(VNĐ/ĐVT)</th>
                 <th class="borderedcol-12-head" rowspan="2">Thành tiền<br>(VNĐ)</th>
             </tr>
             <tr style="background-color: #78b47ac7; color: black">
@@ -1098,6 +1139,22 @@
         </table>
         <p><b>Ghi chú:</b></p>
         <div id="contentfooter"></div>
+        <div id="payment-content" style="display: none;">
+            <table>
+                <tr>
+                    <td style="width: 50%">
+                        <img id="qr-code" alt="QR Code" />
+                    </td>
+                    <td style="width: 50%">
+                        <p>- Thông tin chuyển khoản:<br>
+                            - Số tài khoản: 19050356270019<br>
+                            - Ngân hàng: Techcombank - Chi nhánh Thái Bình<br>
+                            - Chủ tài khoản: TRINH XUAN THINH<br>
+                            - Số tiền: <span id="sotienConthieunpp"></span> VNĐ</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 
