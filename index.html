@@ -36,6 +36,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 1;
+            overflow-x: auto;
         }
 
         h2 {
@@ -61,14 +62,15 @@
             max-width: 210mm;
             border-collapse: collapse;
             margin-top: 20px;
+            table-layout: auto;
         }
 
         .bordered-table {
-            width: 210mm;
-            max-width: 210mm;
+            width: 100%;
+            max-width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: fixed;
+            table-layout: auto;
         }
 
         .info-table th,
@@ -100,6 +102,16 @@
         .bordered-table th:nth-child(3),
         .bordered-table td:nth-child(3) {
             width: 60px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .content {
+                padding: 10px;
+            }
         }
     </style>
 </head>
