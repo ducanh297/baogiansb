@@ -97,6 +97,23 @@
             /* Tránh cắt nội dung ô khi in */
         }
 
+        .bordered-table th:nth-child(1),
+        .bordered-table td:nth-child(1) {
+            width: 80px;
+        }
+
+
+
+        .bordered-table th:nth-child(3),
+        .bordered-table td:nth-child(3) {
+            width: 120px;
+        }
+
+        .bordered-table th:nth-child(4),
+        .bordered-table td:nth-child(4) {
+            width: 180px;
+        }
+
         .bordered-table tr {
             page-break-inside: avoid;
             /* Tránh cắt hàng bảng khi in */
@@ -799,7 +816,7 @@
                 <th style="text-align: center">Rộng<br>(mm)</th>
                 <th style="text-align: center">Cao<br>(mm)</th>
             </tr>
-            <tbody id="itemTableBody">
+            <tbody class="bordered-table" id="itemTableBody">
                 <!-- Rows will be added dynamically here -->
             </tbody>
             <tr>
