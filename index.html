@@ -713,7 +713,7 @@
             const item = extractDetailDataFromRow(row);
 
             tableBody.innerHTML += `
-                <tr>
+                <tr class="bordered-table">
                     <td style="text-align: center">${item.sttTrongdon || ''}</td>
                     <td>${item.vitriLapdat || ''}</td>
                     <td>${item.maSanphamid || ''}</td>
@@ -726,7 +726,7 @@
                     <td style="text-align: center">${item.khoiLuong || ''}</td>
                     <td style="text-align: right">${item.dongianpp || ''}</td>
                     <td style="text-align: right">${item.giabannpp || ''}</td>
-                </tr>
+                </tr class="bordered-table">
             `;
         });
     }
@@ -801,7 +801,7 @@
                 <th style="text-align: center">Rộng<br>(mm)</th>
                 <th style="text-align: center">Cao<br>(mm)</th>
             </tr>
-            <tbody class="bordered-table" id="itemTableBody">
+            <tbody id="itemTableBody">
                 <!-- Rows will be added dynamically here -->
             </tbody>
             <tr>
