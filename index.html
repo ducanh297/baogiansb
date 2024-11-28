@@ -258,7 +258,7 @@
             .info-table td,
             .bordered-table th,
             .bordered-table td {
-                border: 1px solid black;
+                border: 0.5px solid black;
                 padding: 3px;
                 word-wrap: break-word;
                 page-break-inside: avoid;
@@ -660,31 +660,31 @@
                         if (donviPhutrach === "BP. BH1" && phuongThucban !== "Bán chéo") {
                             htmlContent = `
                             <tbody>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Kính gửi:</i></td>
                                         <td class="infocol-2">${tenNguoilienhe}</td>
                                         <td class="infocol-3"><i>Ngày phát hành:</i></td>
                                         <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Đơn vị:</i></td>
                                         <td class="infocol-2">${donviPhutrach}</td>
                                         <td class="infocol-3"><i>Đơn vị trực thuộc:</i></td>
                                         <td class="infocol-4">${donviPhutrach}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Địa chỉ:</i></td>
                                         <td class="infocol-2">${diachiChitiet}</td>
                                         <td class="infocol-3"><i>Soạn báo giá:</i></td>
                                         <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>SĐT:</i></td>
                                         <td class="infocol-2">${sdtKhachhang}</td>
                                         <td class="infocol-3"><i>SĐT:</i></td>
                                         <td class="infocol-4">${sdtNhanvien}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Email:</i></td>
                                         <td class="infocol-2">
                                                 <b><font color="red">${emailKhachhang}</font></b>
@@ -699,31 +699,31 @@
                         } else if (donviPhutrach === "BP. BH1" && phuongThucban === "Bán chéo") {
                             htmlContent = `
                                 <tbody>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Kính gửi:</i></td>
                                         <td class="infocol-2">${tenKhachhangcuoi}</td>
                                         <td class="infocol-3"><i>Ngày phát hành:</i></td>
                                         <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Đơn vị:</i></td>
                                         <td class="infocol-2"></td>
                                         <td class="infocol-3"><i>Đơn vị trực thuộc:</i></td>
                                         <td class="infocol-4">${donviPhutrach}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Địa chỉ:</i></td>
                                         <td class="infocol-2">${diachiKhachhangcuoi}</td>
                                         <td class="infocol-3"><i>Soạn báo giá:</i></td>
                                         <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>SĐT:</i></td>
                                         <td class="infocol-2">${sdtKhachhangcuoi}</td>
                                         <td class="infocol-3"><i>SĐT:</i></td>
                                         <td class="infocol-4">${sdtNhanvien}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Email:</i></td>
                                         <td class="infocol-2">
                                                 <b><font color="red"></font> </b>
@@ -738,31 +738,31 @@
                         } else if (donviPhutrach !== "BP. BH1" && hanGiaohang !== "") {
                             htmlContent = `
                                    <tbody>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Kính gửi:</i></td>
                                         <td class="infocol-2"></span></td>
                                         <td class="infocol-3"><i>Ngày phát hành:</i></td>
                                         <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Đơn vị:</i></td>
                                         <td class="infocol-2">${donviPhutrach}</td>
                                         <td class="infocol-3"><i>Dự kiến giao:</i></td>
                                         <td class="infocol-4">${hanGiaohang}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Địa chỉ:</i></td>
                                         <td class="infocol-2">${diachi}</td>
                                         <td class="infocol-3"><i>Soạn báo giá:</i></td>
                                         <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>SĐT:</i></td>
                                         <td class="infocol-2">${sdtNhanvien}</td>
                                         <td class="infocol-3"><i></i></td>
                                         <td class="infocol-4"></td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Công trình:</i></td>
                                         <td class="infocol-2">
                                                 <b><font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font></b>
@@ -777,31 +777,31 @@
                         } else if (donviPhutrach !== "BP. BH1" && hanGiaohang === "") {
                             htmlContent = `
                                    <tbody>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Kính gửi:</i></td>
                                         <td class="infocol-2"></span></td>
                                         <td class="infocol-3"><i>Ngày phát hành:</i></td>
                                         <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Đơn vị:</i></td>
                                         <td class="infocol-2">${donviPhutrach}</td>
                                         <td class="infocol-3"><i>Dự kiến giao:</i></td>
                                         <td class="infocol-4">Trao đổi với QLSX</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Địa chỉ:</i></td>
                                         <td class="infocol-2">${diachi}</td>
                                         <td class="infocol-3"><i>Soạn báo giá:</i></td>
                                         <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>SĐT:</i></td>
                                         <td class="infocol-2">${sdtNhanvien}</td>
                                         <td class="infocol-3"><i></i></td>
                                         <td class="infocol-4"></td>
                                     </tr>
-                                    <tr style="line-height: 24px;">
+                                    <tr>
                                         <td class="infocol-1"><i>Công trình:</i></td>
                                         <td class="infocol-2">
                                                 <b><font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font></b>
