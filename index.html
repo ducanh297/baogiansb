@@ -123,22 +123,52 @@
         @media (max-width: 768px) {
             body {
                 background-size: cover;
-                /* Điều chỉnh ảnh nền trên thiết bị nhỏ */
             }
 
             .content {
                 padding: 10px;
-                /* Giảm padding để nội dung vừa màn hình */
             }
 
             .bordered-table th,
             .bordered-table td {
                 font-size: 14px;
-                /* Giảm kích thước chữ trên thiết bị di động */
+                padding: 5px;
             }
 
-            .bordered-table {
-                font-size: 14px;
+            .bordered-table th:nth-child(1),
+            .bordered-table td:nth-child(1) {
+                width: auto;
+                /* Thả nổi chiều rộng cột để phù hợp màn hình nhỏ */
+            }
+
+            .bordered-table th:nth-child(2),
+            .bordered-table td:nth-child(2) {
+                width: auto;
+            }
+
+            /* Chuyển bảng thành dạng dọc trên màn hình nhỏ */
+            .bordered-table,
+            .bordered-table tbody,
+            .bordered-table tr {
+                display: block;
+            }
+
+            .bordered-table tr {
+                margin-bottom: 15px;
+            }
+
+            .bordered-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .bordered-table td:before {
+                content: attr(data-label);
+                flex-basis: 50%;
+                font-weight: bold;
+                text-align: left;
+                padding-right: 10px;
             }
         }
     </style>
