@@ -79,25 +79,114 @@
         .bordered-table td {
             border: 1px solid black;
             padding: 5px;
-            text-align: left;
             word-wrap: break-word;
             page-break-inside: avoid;
         }
 
-        .col-1 {
+        .infocol-1 {
             width: 12%;
         }
 
-        .col-2 {
+        .infocol-2 {
             width: 50%;
         }
 
-        .col-3 {
+        .infocol-3 {
             width: 15%;
         }
 
-        .col-4 {
+        .infocol-4 {
             width: 23%;
+        }
+
+        .borderedcol-1 {
+            width: 1.5%;
+            text-align: center;
+        }
+
+        .borderedcol-2-head {
+            width: 6%;
+            text-align: center;
+        }
+
+        .borderedcol-3-head {
+            width: 11%;
+            text-align: center;
+        }
+
+        .borderedcol-4-head {
+            width: 25%;
+            text-align: center;
+        }
+
+        .borderedcol-2 {
+            width: 6%;
+            text-align: left;
+        }
+
+        .borderedcol-3 {
+            width: 11%;
+            text-align: left;
+        }
+
+        .borderedcol-4 {
+            width: 25%;
+            text-align: left;
+        }
+
+        .borderedcol-5 {
+            width: 7%;
+            text-align: center;
+        }
+
+        .borderedcol-6 {
+            width: 7%;
+            text-align: center;
+        }
+
+        .borderedcol-7 {
+            width: 6%;
+            text-align: center;
+        }
+
+        .borderedcol-8 {
+            width: 4.5%;
+            text-align: center;
+        }
+
+        .borderedcol-9 {
+            width: 4%;
+            text-align: center;
+        }
+
+        .borderedcol-10 {
+            width: 6%;
+            text-align: center;
+        }
+
+        .borderedcol-11-head {
+            width: 11%;
+            text-align: center;
+        }
+
+        .borderedcol-12-head {
+            width: 11%;
+            text-align: center;
+        }
+
+        .borderedcol-11 {
+            width: 11%;
+            text-align: right;
+        }
+
+        .borderedcol-12 {
+            width: 11%;
+            text-align: right;
+        }
+
+        .borderedcol-13 {
+            width: 14%;
+            text-align: right;
         }
     </style>
 </head>
@@ -390,43 +479,38 @@
                             htmlContent = `
                             <tbody>
                                     <tr style="line-height: 24px;">
-                                        <td colspan="2"><b>Thông tin báo giá</b></td>
-                                        <td><i>Số:</i></td>
-                                        <td><i>${maDonhang}</i></td>
+                                        <td class="infocol-1"><i>Kính gửi:</i></td>
+                                        <td class="infocol-2">${tenNguoilienhe}</td>
+                                        <td class="infocol-3"><i>Ngày phát hành:</i></td>
+                                        <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Kính gửi:</i></td>
-                                        <td>${tenNguoilienhe}</td>
-                                        <td><i>Ngày phát hành:</i></td>
-                                        <td>${ngayPhatHanh}</td>
+                                        <td class="infocol-1"><i>Đơn vị:</i></td>
+                                        <td class="infocol-2">${donviPhutrach}</td>
+                                        <td class="infocol-3"><i>Đơn vị trực thuộc:</i></td>
+                                        <td class="infocol-4">${donviPhutrach}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Đơn vị:</i></td>
-                                        <td>${donviPhutrach}</td>
-                                        <td><i>Đơn vị trực thuộc:</i></td>
-                                        <td>${donviPhutrach}</td>
+                                        <td class="infocol-1"><i>Địa chỉ:</i></td>
+                                        <td class="infocol-2">${diachiChitiet}</td>
+                                        <td class="infocol-3"><i>Soạn báo giá:</i></td>
+                                        <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Địa chỉ:</i></td>
-                                        <td>${diachiChitiet}</td>
-                                        <td><i>Soạn báo giá:</i></td>
-                                        <td>${tenNhanvien}</td>
+                                        <td class="infocol-1"><i>SĐT:</i></td>
+                                        <td class="infocol-2">${sdtKhachhang}</td>
+                                        <td class="infocol-3"><i>SĐT:</i></td>
+                                        <td class="infocol-4">${sdtNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>SĐT:</i></td>
-                                        <td>${sdtKhachhang}</td>
-                                        <td><i>SĐT:</i></td>
-                                        <td>${sdtNhanvien}</td>
-                                    </tr>
-                                    <tr style="line-height: 24px;">
-                                        <td><i>Email:</i></td>
-                                        <td><b>
-                                                <font color="red">${emailKhachhang}</font>
-                                            </b></td>
-                                        <td><i>CSKH:</i></td>
-                                       <td><b>
-                                                <font color="red">1900 0282</font>
-                                            </b></td>
+                                        <td class="infocol-1"><i>Email:</i></td>
+                                        <td class="infocol-2">
+                                                <b><font color="red">${emailKhachhang}</font></b>
+                                            </td>
+                                        <td class="infocol-3"><i>CSKH:</i></td>
+                                        <td class="infocol-4">
+                                                <b><font color="red">1900 0282</font></b>
+                                            </td>
                                     </tr>
                                 </tbody>
                             `;
@@ -434,43 +518,38 @@
                             htmlContent = `
                                 <tbody>
                                     <tr style="line-height: 24px;">
-                                        <td colspan="2"><b>Thông tin báo giá</b></td>
-                                        <td><i>Số:</i></td>
-                                        <td><i>${maDonhang}</i></td>
+                                        <td class="infocol-1"><i>Kính gửi:</i></td>
+                                        <td class="infocol-2">${tenKhachhangcuoi}</td>
+                                        <td class="infocol-3"><i>Ngày phát hành:</i></td>
+                                        <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Kính gửi:</i></td>
-                                        <td>${tenKhachhangcuoi}</td>
-                                        <td><i>Ngày phát hành:</i></td>
-                                        <td>${ngayPhatHanh}</td>
+                                        <td class="infocol-1"><i>Đơn vị:</i></td>
+                                        <td class="infocol-2"></td>
+                                        <td class="infocol-3"><i>Đơn vị trực thuộc:</i></td>
+                                        <td class="infocol-4">${donviPhutrach}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Đơn vị:</i></td>
-                                        <td></td>
-                                        <td><i>Đơn vị trực thuộc:</i></td>
-                                        <td>${donviPhutrach}</td>
+                                        <td class="infocol-1"><i>Địa chỉ:</i></td>
+                                        <td class="infocol-2">${diachiKhachhangcuoi}</td>
+                                        <td class="infocol-3"><i>Soạn báo giá:</i></td>
+                                        <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Địa chỉ:</i></td>
-                                        <td>${diachiKhachhangcuoi}</td>
-                                        <td><i>Soạn báo giá:</i></td>
-                                        <td>${tenNhanvien}</td>
+                                        <td class="infocol-1"><i>SĐT:</i></td>
+                                        <td class="infocol-2">${sdtKhachhangcuoi}</td>
+                                        <td class="infocol-3"><i>SĐT:</i></td>
+                                        <td class="infocol-4">${sdtNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>SĐT:</i></td>
-                                        <td>${sdtKhachhangcuoi}</td>
-                                        <td><i>SĐT:</i></td>
-                                        <td>${sdtNhanvien}</td>
-                                    </tr>
-                                    <tr style="line-height: 24px;">
-                                        <td><i>Email:</i></td>
-                                        <td><b>
-                                                <font color="red"></font>
-                                            </b></td>
-                                        <td><i>CSKH:</i></td>
-                                        <td><b>
-                                                <font color="red">1900 0282</font>
-                                            </b></td>
+                                        <td class="infocol-1"><i>Email:</i></td>
+                                        <td class="infocol-2">
+                                                <b><font color="red"></font> </b>
+                                           </td>
+                                        <td class="infocol-3"><i>CSKH:</i></td>
+                                        <td class="infocol-4">
+                                                <b><font color="red">1900 0282</font></b>
+                                            </td>
                                     </tr>
                                 </tbody>
                                 `;
@@ -478,43 +557,38 @@
                             htmlContent = `
                                    <tbody>
                                     <tr style="line-height: 24px;">
-                                        <td colspan="2"><b>Thông tin báo giá</b></td>
-                                        <td><i>Số:</i></td>
-                                        <td><i>${maDonhang}</i></td>
+                                        <td class="infocol-1"><i>Kính gửi:</i></td>
+                                        <td class="infocol-2"></span></td>
+                                        <td class="infocol-3"><i>Ngày phát hành:</i></td>
+                                        <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Kính gửi:</i></td>
-                                        <td></span></td>
-                                        <td><i>Ngày phát hành:</i></td>
-                                        <td>${ngayPhatHanh}</td>
+                                        <td class="infocol-1"><i>Đơn vị:</i></td>
+                                        <td class="infocol-2">${donviPhutrach}</td>
+                                        <td class="infocol-3"><i>Dự kiến giao:</i></td>
+                                        <td class="infocol-4">${hanGiaohang}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Đơn vị:</i></td>
-                                        <td>${donviPhutrach}</td>
-                                        <td><i>Dự kiến giao:</i></td>
-                                        <td>${hanGiaohang}</td>
+                                        <td class="infocol-1"><i>Địa chỉ:</i></td>
+                                        <td class="infocol-2">${diachi}</td>
+                                        <td class="infocol-3"><i>Soạn báo giá:</i></td>
+                                        <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Địa chỉ:</i></td>
-                                        <td>${diachi}</td>
-                                        <td><i>Soạn báo giá:</i></td>
-                                        <td>${tenNhanvien}</td>
+                                        <td class="infocol-1"><i>SĐT:</i></td>
+                                        <td class="infocol-2">${sdtNhanvien}</td>
+                                        <td class="infocol-3"><i></i></td>
+                                        <td class="infocol-4"></td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>SĐT:</i></td>
-                                        <td>${sdtNhanvien}</td>
-                                        <td><i></i></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="line-height: 24px;">
-                                        <td><i>Công trình:</i></td>
-                                        <td><b>
-                                                <font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font>
-                                            </b></td>
-                                        <td><i>CSKH:</i></td>
-                                        <td><b>
-                                                <font color="red">1900 0282</font>
-                                        </td></b>
+                                        <td class="infocol-1"><i>Công trình:</i></td>
+                                        <td class="infocol-2">
+                                                <b><font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font></b>
+                                            </td>
+                                        <td class="infocol-3"><i>CSKH:</i></td>
+                                        <td class="infocol-4">
+                                                <b><font color="red">1900 0282</font></b>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 `;
@@ -522,36 +596,36 @@
                             htmlContent = `
                                    <tbody>
                                     <tr style="line-height: 24px;">
-                                        <td class="col-1"><i>Kính gửi:</i></td>
-                                        <td class="col-2"></span></td>
-                                        <td class="col-3"><i>Ngày phát hành:</i></td>
-                                        <td class="col-4">${ngayPhatHanh}</td>
+                                        <td class="infocol-1"><i>Kính gửi:</i></td>
+                                        <td class="infocol-2"></span></td>
+                                        <td class="infocol-3"><i>Ngày phát hành:</i></td>
+                                        <td class="infocol-4">${ngayPhatHanh}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td class="col-1"><i>Đơn vị:</i></td>
-                                        <td class="col-2">${donviPhutrach}</td>
-                                        <td class="col-3"><i>Dự kiến giao:</i></td>
-                                        <td class="col-4">Trao đổi với QLSX</td>
+                                        <td class="infocol-1"><i>Đơn vị:</i></td>
+                                        <td class="infocol-2">${donviPhutrach}</td>
+                                        <td class="infocol-3"><i>Dự kiến giao:</i></td>
+                                        <td class="infocol-4">Trao đổi với QLSX</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td class="col-1"><i>Địa chỉ:</i></td>
-                                        <td class="col-2">${diachi}</td>
-                                        <td class="col-3"><i>Soạn báo giá:</i></td>
-                                        <td class="col-4">${tenNhanvien}</td>
+                                        <td class="infocol-1"><i>Địa chỉ:</i></td>
+                                        <td class="infocol-2">${diachi}</td>
+                                        <td class="infocol-3"><i>Soạn báo giá:</i></td>
+                                        <td class="infocol-4">${tenNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td class="col-1"><i>SĐT:</i></td>
-                                        <td class="col-2">${sdtNhanvien}</td>
-                                        <td class="col-3"><i></i></td>
-                                        <td class="col-4"></td>
+                                        <td class="infocol-1"><i>SĐT:</i></td>
+                                        <td class="infocol-2">${sdtNhanvien}</td>
+                                        <td class="infocol-3"><i></i></td>
+                                        <td class="infocol-4"></td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td class="col-1"><i>Công trình:</i></td>
-                                        <td class="col-2">
+                                        <td class="infocol-1"><i>Công trình:</i></td>
+                                        <td class="infocol-2">
                                                 <b><font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font></b>
                                             </td>
-                                        <td class="col-3"><i>CSKH:</i></td>
-                                        <td class="col-4">
+                                        <td class="infocol-3"><i>CSKH:</i></td>
+                                        <td class="infocol-4">
                                                 <b><font color="red">1900 0282</font></b>
                                         </td>
                                     </tr>
@@ -682,19 +756,19 @@
 
             tableBody.innerHTML += `
                 <tr class="bordered-table">
-                    <td style="text-align: center; width: 8px;">${item.sttTrongdon || ''}</td>
-                    <td style="width: 40px;">${item.vitriLapdat || ''}</td>
-                    <td style="width: 60px;">${item.maSanphamid || ''}</td>
-                    <td style="width: 150px;">${item.diengiai || ''}</td>
-                    <td style="text-align: center; width: 50px;">${item.chieuRong || ''}</td>
-                    <td style="text-align: center; width: 50px;">${item.chieuCao || ''}</td>
-                    <td style="text-align: center; width: 45px;">${item.dienTich || ''}</td>
-                    <td style="text-align: center; width: 30px;">${item.soLuong || ''}</td>
-                    <td style="text-align: center; width: 30px;">${item.dvt || ''}</td>
-                    <td style="text-align: center; width: 45px;">${item.khoiLuong || ''}</td>
-                    <td style="text-align: right; width: 80px;">${item.dongianpp || ''}</td>
-                    <td style="text-align: right; width: 80px;">${item.giabannpp || ''}</td>
-                </tr class="bordered-table">
+                    <td class="borderedcol-1">${item.sttTrongdon || ''}</td>
+                    <td class="borderedcol-2">${item.vitriLapdat || ''}</td>
+                    <td class="borderedcol-3">${item.maSanphamid || ''}</td>
+                    <td class="borderedcol-4">${item.diengiai || ''}</td>
+                    <td class="borderedcol-5">${item.chieuRong || ''}</td>
+                    <td class="borderedcol-6">${item.chieuCao || ''}</td>
+                    <td class="borderedcol-7">${item.dienTich || ''}</td>
+                    <td class="borderedcol-8">${item.soLuong || ''}</td>
+                    <td class="borderedcol-9">${item.dvt || ''}</td>
+                    <td class="borderedcol-10">${item.khoiLuong || ''}</td>
+                    <td class="borderedcol-11">${item.dongianpp || ''}</td>
+                    <td class="borderedcol-12">${item.giabannpp || ''}</td>
+                </tr>
             `;
         });
     }
@@ -754,27 +828,28 @@
         </table>
         <table class="bordered-table">
             <tr style="background-color: #78b47ac7; color: black">
-                <th rowspan="2" style="text-align: center; width: 8px;">STT</th>
-                <th rowspan="2" style="text-align: center; width: 40px;">Vị trí lắp đặt</th>
-                <th rowspan="2" style="text-align: center; width: 60px;">Mã sản phẩm</th>
-                <th rowspan="2" style="text-align: center; width: 150px;">Diễn giải</th>
-                <th colspan="2" style="text-align: center; width: 100px;">Kích thước</th>
-                <th rowspan="2" style="text-align: center; width: 45px;">Diện tích<br>(m2)</th>
-                <th rowspan="2" style="text-align: center; width: 30px;">S.lg<br>(bộ)</th>
-                <th rowspan="2" style="text-align: center; width: 30px;">Đ<br>V<br>T</th>
-                <th rowspan="2" style="text-align: center; width: 45px;">K.lg</th>
-                <th rowspan="2" style="text-align: center; width: 80px;">Đơn giá<br>(VNĐ<br>/ĐVT)</th>
-                <th rowspan="2" style="text-align: center; width: 80px;">Thành tiền<br>(VNĐ)</th>
+                <th class="borderedcol-1" rowspan="2">STT</th>
+                <th class="borderedcol-2-head" rowspan="2">Vị trí lắp đặt</th>
+                <th class="borderedcol-3-head" rowspan="2">Mã sản phẩm</th>
+                <th class="borderedcol-4-head" rowspan="2">Diễn giải</th>
+                <th class="borderedcol-13" colspan="2">Kích thước</th>
+                <th class="borderedcol-7" rowspan="2">Diện tích<br>(m<sup>2</sup>)</th>
+                <th class="borderedcol-8" rowspan="2">S.lg<br>(bộ)</th>
+                <th class="borderedcol-9" rowspan="2">Đ<br>V<br>T</th>
+                <th class="borderedcol-10" rowspan="2">K.lg</th>
+                <th class="borderedcol-11-head" rowspan="2">Đơn giá<br>(VNĐ<br>/ĐVT)</th>
+                <th class="borderedcol-12-head" rowspan="2">Thành tiền<br>(VNĐ)</th>
             </tr>
             <tr style="background-color: #78b47ac7; color: black">
-                <th style="text-align: center; width: 50px;">Rộng<br>(mm)</th>
-                <th style="text-align: center; width: 50px;">Cao<br>(mm)</th>
+                <th class="borderedcol-5">Rộng<br>(mm)</th>
+                <th class="borderedcol-6">Cao<br>(mm)</th>
             </tr>
+
             <tbody id="itemTableBody">
                 <!-- Rows will be added dynamically here -->
             </tbody>
             <tr>
-                <th colspan="7">Cộng</th>
+                <th style="text-align: left" colspan="7">Cộng</th>
                 <th style="text-align: center"><span id="tongSobo"></span></th>
                 <th style="text-align: center"><b>Bộ</b></th>
                 <th></th>
@@ -782,7 +857,7 @@
                 <th style="text-align: right"><span id="congnpp"></span></th>
             </tr>
             <tr id="rowChietKhau">
-                <th colspan="7">Chiết khấu</th>
+                <th style="text-align: left" colspan="7">Chiết khấu</th>
                 <th style="text-align: center"><span id="mucChietkhaunpp">%</span></th>
                 <th></th>
                 <th></th>
@@ -790,7 +865,7 @@
                 <th style="text-align: right"><span id="giatriChietkhaunpp"></span></th>
             </tr>
             <tr id="rowPhiVanChuyen">
-                <th colspan="7">Phí vận chuyển lắp đặt</th>
+                <th style="text-align: left" colspan="7">Phí vận chuyển lắp đặt</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -798,7 +873,7 @@
                 <th style="text-align: right"><span id="phiVanchuyenlapdatnpp"></span></th>
             </tr>
             <tr id="rowThueGTGT">
-                <th colspan="7">Thuế GTGT</th>
+                <th style="text-align: left" colspan="7">Thuế GTGT</th>
                 <th style="text-align: center"><span id="mucthueGTGTnpp">%</span></th>
                 <th></th>
                 <th></th>
@@ -806,7 +881,7 @@
                 <th style="text-align: right"><span id="thueGTGTnpp"></span></th>
             </tr>
             <tr id="rowTamUng">
-                <th colspan="7">Tạm ứng</th>
+                <th style="text-align: left" colspan="7">Tạm ứng</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -814,7 +889,7 @@
                 <th style="text-align: right"><span id="tamUngnpp"></span></th>
             </tr>
             <tr>
-                <th colspan="7">Số tiền còn phải thanh toán</th>
+                <th style="text-align: left" colspan="7">Số tiền còn phải thanh toán</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -822,7 +897,7 @@
                 <th style="text-align: right"><span id="sotienConthieunpp"></span></th>
             </tr>
             <tr>
-                <th colspan="12">Bằng chữ: <span id="sotienBangchu"></span></th>
+                <th style="text-align: left" colspan="12">Bằng chữ: <span id="sotienBangchu"></span></th>
             </tr>
         </table>
         <p><b>Ghi chú:</b></p>
