@@ -18,12 +18,11 @@
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
             background: url('https://i.imgur.com/BrJoeOv.png') no-repeat center center;
-            background-size: 100% auto;
+            background-size: 210mm auto;
             opacity: 0.99;
         }
 
@@ -57,15 +56,17 @@
         }
 
         .info-table {
-            width: 210mm;
+            size: A4;
+            width: 100%;
             max-width: 210mm;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: auto;
+            table-layout: fixed;
         }
 
         .bordered-table {
-            width: 210mm;
+            size: A4;
+            width: 100%;
             max-width: 210mm;
             border-collapse: collapse;
             margin-top: 20px;
@@ -83,24 +84,20 @@
             page-break-inside: avoid;
         }
 
-        .info-table th:nth-child(1),
-        .info-table td:nth-child(1) {
-            width: 80px;
+        .col-1 {
+            width: 12%;
         }
 
-        .info-table th:nth-child(3),
-        .info-table td:nth-child(3) {
-            width: 120px;
+        .col-2 {
+            width: 50%;
         }
 
-        .info-table th:nth-child(4),
-        .info-table td:nth-child(4) {
-            width: 180px;
+        .col-3 {
+            width: 15%;
         }
 
-        .bordered-table th:nth-child(3),
-        .bordered-table td:nth-child(3) {
-            width: 60px;
+        .col-4 {
+            width: 23%;
         }
     </style>
 </head>
@@ -525,43 +522,38 @@
                             htmlContent = `
                                    <tbody>
                                     <tr style="line-height: 24px;">
-                                        <td colspan="2"><b>Thông tin báo giá</b></td>
-                                        <td><i>Số:</i></td>
-                                        <td><i>${maDonhang}</i></td>
+                                        <td class="col-1"><i>Kính gửi:</i></td>
+                                        <td class="col-2"></span></td>
+                                        <td class="col-3"><i>Ngày phát hành:</i></td>
+                                        <td class="col-4">${ngayPhatHanh}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Kính gửi:</i></td>
-                                        <td></span></td>
-                                        <td><i>Ngày phát hành:</i></td>
-                                        <td>${ngayPhatHanh}</td>
+                                        <td class="col-1"><i>Đơn vị:</i></td>
+                                        <td class="col-2">${donviPhutrach}</td>
+                                        <td class="col-3"><i>Dự kiến giao:</i></td>
+                                        <td class="col-4">Trao đổi với QLSX</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Đơn vị:</i></td>
-                                        <td>${donviPhutrach}</td>
-                                        <td><i>Dự kiến giao:</i></td>
-                                        <td>Trao đổi với QLSX</td>
+                                        <td class="col-1"><i>Địa chỉ:</i></td>
+                                        <td class="col-2">${diachi}</td>
+                                        <td class="col-3"><i>Soạn báo giá:</i></td>
+                                        <td class="col-4">${tenNhanvien}</td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>Địa chỉ:</i></td>
-                                        <td>${diachi}</td>
-                                        <td><i>Soạn báo giá:</i></td>
-                                        <td>${tenNhanvien}</td>
+                                        <td class="col-1"><i>SĐT:</i></td>
+                                        <td class="col-2">${sdtNhanvien}</td>
+                                        <td class="col-3"><i></i></td>
+                                        <td class="col-4"></td>
                                     </tr>
                                     <tr style="line-height: 24px;">
-                                        <td><i>SĐT:</i></td>
-                                        <td>${sdtNhanvien}</td>
-                                        <td><i></i></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="line-height: 24px;">
-                                        <td><i>Công trình:</i></td>
-                                        <td><b>
-                                                <font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font>
-                                            </b></td>
-                                        <td><i>CSKH:</i></td>
-                                        <td><b>
-                                                <font color="red">1900 0282</font>
-                                        </td></b>
+                                        <td class="col-1"><i>Công trình:</i></td>
+                                        <td class="col-2">
+                                                <b><font color="red">${tenNguoilienhe} - ${diachiChitiet} - ${sdtKhachhang}</font></b>
+                                            </td>
+                                        <td class="col-3"><i>CSKH:</i></td>
+                                        <td class="col-4">
+                                                <b><font color="red">1900 0282</font></b>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 `;
@@ -757,6 +749,7 @@
     <div class="content">
         <img src="https://i.imgur.com/vfwvNd4.jpg" alt="Mô tả hình ảnh">
         <h2 style="text-align: center">BÁO GIÁ CỬA LƯỚI CHỐNG MUỖI</h2>
+        <h3 style="text-align: center">Số: <span id="maDonhang"></span></h3>
         <table class="info-table" id="content">
         </table>
         <table class="bordered-table">
