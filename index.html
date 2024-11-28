@@ -56,11 +56,17 @@
             margin: 0 auto 20px;
         }
 
-        .info-table,
-        .bordered-table {
-            width: 100%;
+        .info-table {
+            width: 210mm;
             border-collapse: collapse;
             margin-top: 20px;
+        }
+
+        .bordered-table {
+            width: 210mm;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;
         }
 
         .info-table th,
@@ -68,55 +74,30 @@
         .bordered-table th,
         .bordered-table td {
             border: 1px solid black;
-            padding: 8px;
+            padding: 5px;
             text-align: left;
             word-wrap: break-word;
             page-break-inside: avoid;
         }
 
-        /* Đảm bảo các bảng không bị tràn màn hình nhỏ */
-        @media (max-width: 768px) {
-            .content {
-                padding: 10px;
-            }
+        .info-table th:nth-child(1),
+        .info-table td:nth-child(1) {
+            width: 80px;
+        }
 
-            .info-table,
-            .bordered-table {
-                font-size: 14px;
-                width: 100%;
-            }
+        .info-table th:nth-child(3),
+        .info-table td:nth-child(3) {
+            width: 120px;
+        }
 
-            .info-table th,
-            .info-table td,
-            .bordered-table th,
-            .bordered-table td {
-                padding: 6px;
-                font-size: 14px;
-            }
+        .info-table th:nth-child(4),
+        .info-table td:nth-child(4) {
+            width: 180px;
+        }
 
-            .bordered-table th:nth-child(3),
-            .bordered-table td:nth-child(3),
-            .info-table th:nth-child(1),
-            .info-table td:nth-child(1) {
-                width: auto;
-            }
-
-            /* Điều chỉnh bảng thành dạng dọc cho màn hình rất nhỏ */
-            .info-table,
-            .bordered-table {
-                display: block;
-                overflow-x: auto;
-            }
-
-            .info-table th,
-            .bordered-table th {
-                white-space: nowrap;
-            }
-
-            .info-table td,
-            .bordered-table td {
-                white-space: normal;
-            }
+        .bordered-table th:nth-child(3),
+        .bordered-table td:nth-child(3) {
+            width: 60px;
         }
     </style>
 </head>
@@ -706,16 +687,16 @@
 
             tableBody.innerHTML += `
                 <tr class="bordered-table">
-                    <td style="text-align: center">${item.sttTrongdon || ''}</td>
-                    <td>${item.vitriLapdat || ''}</td>
-                    <td>${item.maSanphamid || ''}</td>
-                    <td>${item.diengiai || ''}</td>
-                    <td style="text-align: right">${item.chieuRong || ''}</td>
-                    <td style="text-align: center">${item.chieuCao || ''}</td>
-                    <td style="text-align: right">${item.dienTich || ''}</td>
-                    <td style="text-align: center">${item.soLuong || ''}</td>
-                    <td style="text-align: center">${item.dvt || ''}</td>
-                    <td style="text-align: center">${item.khoiLuong || ''}</td>
+                    <td style="text-align: center; width: 8px;">${item.sttTrongdon || ''}</td>
+                    <td style="width: 40px;">${item.vitriLapdat || ''}</td>
+                    <td style="width: 60px;">${item.maSanphamid || ''}</td>
+                    <td style="width: 120px;">${item.diengiai || ''}</td>
+                    <td style="text-align: center; width: 50px;">${item.chieuRong || ''}</td>
+                    <td style="text-align: center; width: 50px;">${item.chieuCao || ''}</td>
+                    <td style="text-align: center; width: 50px;">${item.dienTich || ''}</td>
+                    <td style="text-align: center; width: 30px;">${item.soLuong || ''}</td>
+                    <td style="text-align: center; width: 30px;">${item.dvt || ''}</td>
+                    <td style="text-align: center; width: 50px;">${item.khoiLuong || ''}</td>
                     <td style="text-align: right">${item.dongianpp || ''}</td>
                     <td style="text-align: right">${item.giabannpp || ''}</td>
                 </tr class="bordered-table">
@@ -777,21 +758,21 @@
         </table>
         <table class="bordered-table">
             <tr style="background-color: #78b47ac7; color: black">
-                <th rowspan="2" style="text-align: center">STT</th>
-                <th rowspan="2" style="text-align: center">Vị trí lắp đặt</th>
-                <th rowspan="2" style="text-align: center">Mã sản phẩm</th>
-                <th rowspan="2" style="text-align: center">Diễn giải</th>
-                <th colspan="2" style="text-align: center">Kích thước</th>
-                <th rowspan="2" style="text-align: center">Diện tích<br>(m2)</th>
-                <th rowspan="2" style="text-align: center">S.lg<br>(bộ)</th>
-                <th rowspan="2" style="text-align: center">ĐVT</th>
-                <th rowspan="2" style="text-align: center">K.lg</th>
+                <th rowspan="2" style="text-align: center; width: 8px;">STT</th>
+                <th rowspan="2" style="text-align: center; width: 40px;">Vị trí lắp đặt</th>
+                <th rowspan="2" style="text-align: center; width: 60px;">Mã sản phẩm</th>
+                <th rowspan="2" style="text-align: center; width: 120px;">Diễn giải</th>
+                <th colspan="2" style="text-align: center; width: 100px;">Kích thước</th>
+                <th rowspan="2" style="text-align: center; width: 50px;">Diện tích<br>(m2)</th>
+                <th rowspan="2" style="text-align: center; width: 30px;">S.lg<br>(bộ)</th>
+                <th rowspan="2" style="text-align: center; width: 30px;">ĐVT</th>
+                <th rowspan="2" style="text-align: center; width: 50px;">K.lg</th>
                 <th rowspan="2" style="text-align: center">Đơn giá<br>(VNĐ/m2)</th>
                 <th rowspan="2" style="text-align: center">Thành tiền<br>(VNĐ)</th>
             </tr>
             <tr style="background-color: #78b47ac7; color: black">
-                <th style="text-align: center">Rộng<br>(mm)</th>
-                <th style="text-align: center">Cao<br>(mm)</th>
+                <th style="text-align: center; width: 50px;">Rộng<br>(mm)</th>
+                <th style="text-align: center; width: 50px;">Cao<br>(mm)</th>
             </tr>
             <tbody id="itemTableBody">
                 <!-- Rows will be added dynamically here -->
@@ -848,10 +829,8 @@
                 <th colspan="12">Bằng chữ: <span id="sotienBangchu"></span></th>
             </tr>
         </table>
-
         <p><b>Ghi chú:</b></p>
         <div id="contentfooter"></div>
-
     </div>
 </body>
 
