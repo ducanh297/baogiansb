@@ -23,7 +23,7 @@
             justify-content: center;
             box-sizing: border-box;
             background: url('https://i.imgur.com/BrJoeOv.png') no-repeat center center;
-            background-size: 210mm auto;
+            background-size: 100% auto;
             opacity: 0.99;
         }
 
@@ -36,7 +36,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 1;
-            overflow-x: auto;
         }
 
         h2 {
@@ -66,11 +65,11 @@
         }
 
         .bordered-table {
-            width: 100%;
-            max-width: 100%;
+            width: 210mm;
+            max-width: 210mm;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: auto;
+            table-layout: fixed;
         }
 
         .info-table th,
@@ -102,16 +101,6 @@
         .bordered-table th:nth-child(3),
         .bordered-table td:nth-child(3) {
             width: 60px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            .content {
-                padding: 10px;
-            }
         }
     </style>
 </head>
@@ -704,15 +693,15 @@
                     <td style="text-align: center; width: 8px;">${item.sttTrongdon || ''}</td>
                     <td style="width: 40px;">${item.vitriLapdat || ''}</td>
                     <td style="width: 60px;">${item.maSanphamid || ''}</td>
-                    <td style="width: 120px;">${item.diengiai || ''}</td>
+                    <td style="width: 150px;">${item.diengiai || ''}</td>
                     <td style="text-align: center; width: 50px;">${item.chieuRong || ''}</td>
                     <td style="text-align: center; width: 50px;">${item.chieuCao || ''}</td>
-                    <td style="text-align: center; width: 50px;">${item.dienTich || ''}</td>
+                    <td style="text-align: center; width: 45px;">${item.dienTich || ''}</td>
                     <td style="text-align: center; width: 30px;">${item.soLuong || ''}</td>
                     <td style="text-align: center; width: 30px;">${item.dvt || ''}</td>
-                    <td style="text-align: center; width: 50px;">${item.khoiLuong || ''}</td>
-                    <td style="text-align: right">${item.dongianpp || ''}</td>
-                    <td style="text-align: right">${item.giabannpp || ''}</td>
+                    <td style="text-align: center; width: 45px;">${item.khoiLuong || ''}</td>
+                    <td style="text-align: right; width: 80px;">${item.dongianpp || ''}</td>
+                    <td style="text-align: right; width: 80px;">${item.giabannpp || ''}</td>
                 </tr class="bordered-table">
             `;
         });
@@ -775,14 +764,14 @@
                 <th rowspan="2" style="text-align: center; width: 8px;">STT</th>
                 <th rowspan="2" style="text-align: center; width: 40px;">Vị trí lắp đặt</th>
                 <th rowspan="2" style="text-align: center; width: 60px;">Mã sản phẩm</th>
-                <th rowspan="2" style="text-align: center; width: 120px;">Diễn giải</th>
+                <th rowspan="2" style="text-align: center; width: 150px;">Diễn giải</th>
                 <th colspan="2" style="text-align: center; width: 100px;">Kích thước</th>
-                <th rowspan="2" style="text-align: center; width: 50px;">Diện tích<br>(m2)</th>
+                <th rowspan="2" style="text-align: center; width: 45px;">Diện tích<br>(m2)</th>
                 <th rowspan="2" style="text-align: center; width: 30px;">S.lg<br>(bộ)</th>
-                <th rowspan="2" style="text-align: center; width: 30px;">ĐVT</th>
-                <th rowspan="2" style="text-align: center; width: 50px;">K.lg</th>
-                <th rowspan="2" style="text-align: center">Đơn giá<br>(VNĐ/m2)</th>
-                <th rowspan="2" style="text-align: center">Thành tiền<br>(VNĐ)</th>
+                <th rowspan="2" style="text-align: center; width: 30px;">Đ<br>V<br>T</th>
+                <th rowspan="2" style="text-align: center; width: 45px;">K.lg</th>
+                <th rowspan="2" style="text-align: center; width: 80px;">Đơn giá<br>(VNĐ<br>/ĐVT)</th>
+                <th rowspan="2" style="text-align: center; width: 80px;">Thành tiền<br>(VNĐ)</th>
             </tr>
             <tr style="background-color: #78b47ac7; color: black">
                 <th style="text-align: center; width: 50px;">Rộng<br>(mm)</th>
