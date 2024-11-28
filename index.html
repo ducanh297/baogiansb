@@ -5,7 +5,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Báo giá Cửa lưới</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
 
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            background: url('https://i.imgur.com/BrJoeOv.png') no-repeat center center;
+            background-size: 210mm auto;
+            opacity: 0.99;
+            /* Điều chỉnh độ trong suốt của ảnh chìm */
+        }
+
+        .content {
+            width: 100%;
+            max-width: 210mm;
+            margin: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            /* Tạo nền trắng mờ cho nội dung */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Đảm bảo rằng các phần tử con nằm trên nền */
+            z-index: 1;
+        }
+
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        p i {
+            font-size: 16px;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .info-table th,
+        .info-table td {
+            margin-top: 20px;
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+            /* Đảm bảo nội dung không tràn khỏi ô */
+            page-break-inside: avoid;
+            /* Tránh cắt nội dung ô khi in */
+        }
+
+        .info-table th:nth-child(1),
+        .info-table td:nth-child(1) {
+            width: 80px;
+        }
+
+        .info-table th:nth-child(3),
+        .info-table td:nth-child(3) {
+            width: 120px;
+        }
+
+        .info-table th:nth-child(4),
+        .info-table td:nth-child(4) {
+            width: 180px;
+        }
+
+
+        .bordered-table {
+            width: 100%;
+            max-width: 210mm;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .bordered-table th:nth-child(3),
+        .bordered-table td:nth-child(3) {
+            width: 60px;
+        }
+
+        .bordered-table th,
+        .bordered-table td {
+            margin-top: 20px;
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+            /* Đảm bảo nội dung không tràn khỏi ô */
+            page-break-inside: avoid;
+            /* Tránh cắt nội dung ô khi in */
+        }
+
+        .bordered-table tr {
+            page-break-inside: avoid;
+            /* Tránh cắt hàng bảng khi in */
+        }
+    </style>
 </head>
 
 <script src="https://apis.google.com/js/api.js"></script>
@@ -660,7 +781,7 @@
     <div class="content">
         <img src="https://i.imgur.com/vfwvNd4.jpg" alt="Mô tả hình ảnh">
         <h2 style="text-align: center">BÁO GIÁ CỬA LƯỚI CHỐNG MUỖI</h2>
-        <table class="bordered-table" id="content">
+        <table class="info-table" id="content">
         </table>
         <table class="bordered-table">
             <tr style="background-color: #78b47ac7; color: black">
