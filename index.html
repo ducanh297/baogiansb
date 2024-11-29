@@ -1042,14 +1042,16 @@
         document.getElementById('content').innerText = message;
     }
 
-    // Hàm ẩn dòng nếu giá trị rỗng hoặc bằng 0
     function toggleRowVisibility(rowId, value) {
         const row = document.getElementById(rowId);
         if (row) {
-            const numericValue = parseFloat(value?.replace(/\./g, '').replace(',', '.') || '0');
+            // Chuyển value sang chuỗi nếu nó không phải chuỗi
+            const stringValue = typeof value === 'string' ? value : String(value || '');
+            const numericValue = parseFloat(stringValue.replace(/\./g, '').replace(',', '.') || '0');
             row.style.display = numericValue ? '' : 'none';
         }
     }
+
 
     // Khởi tạo ứng dụng
     initialize();
@@ -1149,8 +1151,7 @@
                         <p>- Thông tin chuyển khoản:<br>
                             - Số tài khoản: 19050356270019<br>
                             - Ngân hàng: Techcombank - Chi nhánh Thái Bình<br>
-                            - Chủ tài khoản: TRINH XUAN THINH<br>
-                            - Số tiền: <span id="sotienConthieunpp"></span> VNĐ</p>
+                            - Chủ tài khoản: TRINH XUAN THINH</p>
                     </td>
                 </tr>
             </table>
