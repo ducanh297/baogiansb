@@ -983,15 +983,33 @@
         }
     }
 
-    // Hiển thị dữ liệu chi tiết
     function displayDetailData(filteredRows) {
         const tableBody = document.getElementById('itemTableBody');
         tableBody.innerHTML = ''; // Xóa dữ liệu cũ nếu có
 
         filteredRows.forEach(row => {
-            const item = extractDetailDataFromRow(row);
+            const item = extractDetailDataFromRow(row);;
 
-            tableBody.innerHTML += `
+            // Kiểm tra giá trị của donviPhutrach
+            if (!item.maDonhangCT.includes("1C.029.01")) {
+                tableBody.innerHTML += `
+                <tr class="bordered-table">
+                    <td class="borderedcol-1">${item.sttTrongdon || ''}</td>
+                    <td class="borderedcol-2">${item.vitriLapdat || ''}</td>
+                    <td class="borderedcol-3">${item.maSanphamid || ''}</td>
+                    <td class="borderedcol-4">${item.diengiai || ''}${item.ghiChu || ''}</td>
+                    <td class="borderedcol-5">${item.chieuRong || ''}</td>
+                    <td class="borderedcol-6">${item.chieuCao || ''}</td>
+                    <td class="borderedcol-7">${item.dienTich || ''}</td>
+                    <td class="borderedcol-8">${item.soLuong || ''}</td>
+                    <td class="borderedcol-9">${item.dvt || ''}</td>
+                    <td class="borderedcol-10">${item.khoiLuong || ''}</td>
+                    <td class="borderedcol-11">${item.dongianpp || ''}</td>
+                    <td class="borderedcol-12">${item.giabannpp || ''}</td>
+                </tr>
+            `;
+            } else {
+                tableBody.innerHTML += `
                 <tr class="bordered-table">
                     <td class="borderedcol-1">${item.sttTrongdon || ''}</td>
                     <td class="borderedcol-2">${item.vitriLapdat || ''}</td>
@@ -1007,12 +1025,15 @@
                     <td class="borderedcol-12">${item.giabannpp || ''}</td>
                 </tr>
             `;
+            }
         });
     }
+
 
     // Trích xuất dữ liệu từ hàng
     function extractDetailDataFromRow(row) {
         return {
+            maDonhangCT: row[0],
             sttTrongdon: row[2],
             vitriLapdat: row[4],
             diengiai: row[11],
